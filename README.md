@@ -57,7 +57,7 @@ What makes it different from a Gmail filter replacement:
 ## Documentation
 
 - **[Roadmap](ROADMAP.md)** — Prioritized initiatives
-- **[Operator Requirements](docs/design/operator/requirements.md)** — Data plane: email routing engine (v4.0)
+- **[Operator Requirements](docs/design/operator/requirements.md)** — Data plane: email routing engine (v5.1)
 - **[Operator Brainstorm](docs/design/operator/brainstorm.md)** — Detailed design decisions, edge cases, implementation guidance
 - **[Strategist Design](docs/design/strategist/)** — Control plane: rule management and taxonomy evolution (stub)
 
