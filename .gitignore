@@ -18,5 +18,11 @@ Thumbs.db
 # Logs
 *.log
 
-# Environment
+# Environment & secrets
 .env
+*.pem
+*.key
+
+# Build output
+dist/
+coverage/
