@@ -1,6 +1,6 @@
 # Phase 2 — Infrastructure
 
-> **Status:** Not started
+> **Status:** Complete
 > **Depends on:** Phase 1 (Config.js, label cache, observation store shell)
 > **Produces:** `Utils.gs`, batch accumulator in `ObservationStore.gs`
 > **Source spec:** [requirements.md](requirements.md) FR-010, FR-011, FR-012, FR-707, Open Q #10
@@ -57,4 +57,16 @@ This is an implementation spike — the exact stripping/redaction approach needs
 
 ## Implementation Notes
 
-*(To be filled during implementation planning)*
+### Utils.gs (~135 lines)
+- `getInboxThreads(batchSize)` — thin wrapper over `GmailApp.search('is:inbox', 0, batchSize)`
+- `parseFromHeader(fromString)` — uses `lastIndexOf('<')` for defensive parsing, strips quoted display names. Public — reused by Phase 3 Rules.gs.
+- `resolveSender(thread, ownerEmail)` — walks messages newest-to-oldest, case-insensitive ownerEmail comparison. Returns `null` for all-self and empty threads.
+- `isAlreadyLabeled(thread, managedLabelNames)` — takes `Set<string>` from `getManagedLabelNames()`, iterates thread labels.
+- `extractBodySnippet(message, maxChars)` — resolves Open Q #10. Pipeline: `getPlainBody()` → HTML fallback (`getBody()` + `stripHtmlToText_()`) → whitespace normalization → URL redaction (`[link]`) → truncation. Private helper `stripHtmlToText_()` handles tag stripping and entity decoding (named: `&nbsp;`, `&amp;`, `&lt;`, `&gt;`, `&quot;`, `&#39;`; numeric: decimal `&#NNN;` and hex `&#xHH;`).
+
+### ObservationStore.gs (~100 lines added)
+- Module-scoped `routingLogBuffer_` array accumulates rows during the run.
+- `accumulateRow(rowData)` — takes named-field object, maps to positional array matching `ROUTING_LOG_HEADERS` column order. Timestamp and empty `feedback` generated internally.
+- `flushRoutingLog(spreadsheet)` — single `setValues()` call. Stackdriver fallback logs only `thread_id`, `tier`, `label`, and error (no sender/subject in Cloud Logging).
+- `writeRunSummary(spreadsheet, summaryData)` — single `appendRow()`. FR-706 no-op suppression: skips write when `threadsProcessed === 0` and `errors === 0`.
+- Total per run: 2 Sheets API calls (FR-707).
