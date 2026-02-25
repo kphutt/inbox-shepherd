@@ -30,6 +30,7 @@ const CONFIG = {
   rules: [
     { match: { subjectContains: 'verification code' }, action: 'INBOX' },
     { match: { subjectContains: 'security alert' },    action: 'INBOX' },
+    { match: { senderAddress: 'notifications-noreply@google.com' }, action: 'INBOX' },
   ],
 
   // Label taxonomy. Keys = Gmail label names. Values = descriptions fed

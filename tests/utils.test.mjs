@@ -13,6 +13,16 @@ const load = new Function(
 );
 const { parseFromHeader, stripHtmlToText_ } = load();
 
+// Load Rules.gs — same pattern. It depends on no external globals.
+const rulesCode = readFileSync(
+  new URL('../src/Rules.gs', import.meta.url),
+  'utf8',
+);
+const loadRules = new Function(
+  rulesCode + '\nreturn { matchRule };',
+);
+const { matchRule } = loadRules();
+
 // ---------------------------------------------------------------------------
 // parseFromHeader
 // ---------------------------------------------------------------------------
@@ -151,5 +161,98 @@ describe('stripHtmlToText_', () => {
     const result = stripHtmlToText_('<a href="http://example.com">click</a>');
     assert.match(result, /click/);
     assert.doesNotMatch(result, /href/);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// matchRule
+// ---------------------------------------------------------------------------
+describe('matchRule', () => {
+  it('matches senderDomain (case-insensitive)', () => {
+    const rules = [{ match: { senderDomain: 'Chase.com' }, label: 'Financial' }];
+    const result = matchRule({ name: 'Chase', address: 'alerts@chase.COM' }, 'Your statement', rules);
+    assert.notEqual(result, null);
+    assert.equal(result.label, 'Financial');
+    assert.equal(result.action, 'LABEL');
+  });
+
+  it('matches senderAddress (case-insensitive)', () => {
+    const rules = [{ match: { senderAddress: 'Alerts@Chase.com' }, label: 'Financial' }];
+    const result = matchRule({ name: 'Chase', address: 'alerts@chase.com' }, 'Your statement', rules);
+    assert.notEqual(result, null);
+    assert.equal(result.label, 'Financial');
+  });
+
+  it('matches subjectContains (substring, case-insensitive)', () => {
+    const rules = [{ match: { subjectContains: 'verification code' }, action: 'INBOX' }];
+    const result = matchRule({ name: '', address: 'noreply@example.com' }, 'Your Verification Code is 1234', rules);
+    assert.notEqual(result, null);
+    assert.equal(result.action, 'INBOX');
+  });
+
+  it('matches displayName (case-insensitive)', () => {
+    const rules = [{ match: { displayName: 'John Smith' }, label: 'Personal' }];
+    const result = matchRule({ name: 'john smith', address: 'john@example.com' }, 'Hello', rules);
+    assert.notEqual(result, null);
+    assert.equal(result.label, 'Personal');
+  });
+
+  it('first-match-wins (earlier rule beats later)', () => {
+    const rules = [
+      { match: { senderDomain: 'example.com' }, label: 'First' },
+      { match: { senderDomain: 'example.com' }, label: 'Second' },
+    ];
+    const result = matchRule({ name: '', address: 'a@example.com' }, '', rules);
+    assert.equal(result.label, 'First');
+  });
+
+  it('returns null when no rule matches', () => {
+    const rules = [{ match: { senderDomain: 'other.com' }, label: 'X' }];
+    const result = matchRule({ name: '', address: 'a@example.com' }, '', rules);
+    assert.equal(result, null);
+  });
+
+  it('defaults action to LABEL when omitted', () => {
+    const rules = [{ match: { senderDomain: 'example.com' }, label: 'Stuff' }];
+    const result = matchRule({ name: '', address: 'a@example.com' }, '', rules);
+    assert.equal(result.action, 'LABEL');
+  });
+
+  it('INBOX action returns label: undefined', () => {
+    const rules = [{ match: { senderDomain: 'example.com' }, action: 'INBOX' }];
+    const result = matchRule({ name: '', address: 'a@example.com' }, '', rules);
+    assert.equal(result.action, 'INBOX');
+    assert.equal(result.label, undefined);
+  });
+
+  it('returns null for empty rules array', () => {
+    const result = matchRule({ name: '', address: 'a@b.com' }, '', []);
+    assert.equal(result, null);
+  });
+
+  it('returns null for null rules', () => {
+    const result = matchRule({ name: '', address: 'a@b.com' }, '', null);
+    assert.equal(result, null);
+  });
+
+  it('skips malformed rule (no match property)', () => {
+    const rules = [
+      { label: 'Bad' },
+      { match: { senderDomain: 'example.com' }, label: 'Good' },
+    ];
+    const result = matchRule({ name: '', address: 'a@example.com' }, '', rules);
+    assert.equal(result.label, 'Good');
+  });
+
+  it('handles null sender fields', () => {
+    const rules = [{ match: { senderDomain: 'example.com' }, label: 'X' }];
+    const result = matchRule(null, 'subject', rules);
+    assert.equal(result, null);
+  });
+
+  it('handles null subject', () => {
+    const rules = [{ match: { subjectContains: 'hello' }, action: 'INBOX' }];
+    const result = matchRule({ name: '', address: 'a@b.com' }, null, rules);
+    assert.equal(result, null);
   });
 });

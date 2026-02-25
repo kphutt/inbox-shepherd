@@ -60,7 +60,9 @@ function parseFromHeader(fromString) {
  *
  * @param {GmailThread} thread - The Gmail thread to inspect.
  * @param {string} ownerEmail - The account owner's email address.
- * @returns {{ name: string, address: string } | null}
+ * @returns {{ name: string, address: string, message: GmailMessage } | null}
+ *   Includes the resolved message reference so downstream consumers
+ *   (HeaderScreener, extractBodySnippet) don't re-walk the thread.
  */
 function resolveSender(thread, ownerEmail) {
   var messages = thread.getMessages();
@@ -75,7 +77,7 @@ function resolveSender(thread, ownerEmail) {
   for (var i = messages.length - 1; i >= 0; i--) {
     var parsed = parseFromHeader(messages[i].getFrom());
     if (parsed.address.toLowerCase() !== ownerLower) {
-      return parsed;
+      return { name: parsed.name, address: parsed.address, message: messages[i] };
     }
   }
 
