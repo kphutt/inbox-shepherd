@@ -1,6 +1,6 @@
 # Phase 5 — Orchestration
 
-> **Status:** Not started
+> **Status:** Implemented
 > **Depends on:** Phases 3 & 4 (all three tiers complete)
 > **Produces:** `Main.gs` (full pipeline wiring, observation logging, dry-run mode)
 > **Source spec:** [requirements.md](requirements.md) FR-013–016, FR-400–403, FR-700–707, FR-710, NFR-100–103, NFR-302
@@ -78,4 +78,32 @@ Wire the three tiers into the complete pipeline with all production concerns: ex
 
 ## Implementation Notes
 
-*(To be filled during implementation planning)*
+### Architecture
+
+`processInbox()` in `Main.gs` wires the full three-tier pipeline with two pure helper functions:
+
+- **`computeTaxonomyHash(taxonomy)`** — djb2 hash of sorted+stringified taxonomy for drift detection in `run_summary`. Returns 8-char hex.
+- **`computeMode(threadCount, config)`** — selects CLEANUP (>200 threads, batch 100) or MAINTENANCE (<=200, batch 50).
+
+### Pipeline flow
+
+1. **Startup:** validateConfig → ensureLabels → getManagedLabelNames → ensureSheet → resetObservationBuffer → read ScriptProperties state
+2. **Query:** Single `getInboxThreads(201)` call for both mode detection and thread retrieval (no double-fetch)
+3. **Per-thread loop** with two time guards:
+   - 3 min: `llmUnavailable = true` (skips Classifier, Rules still process)
+   - 4 min: break loop entirely
+4. **Per-thread pipeline:** isAlreadyLabeled → resolveSender → dry-run dedup → Tier 1 (screenThread) → Tier 2 (matchRule) → Tier 3 (classifyThread)
+5. **Finally block:** flushRoutingLog → writeRunSummary → update consecutiveFailures/lastSuccessfulRun → releaseLock. Each operation in its own try/catch.
+
+### Key decisions
+
+- **Circuit breaker:** HTTP 429 and 3-min time guard both set `llmUnavailable = true`. Rules continue; only LLM path blocked.
+- **Dry-run dedup (FR-702):** `thread.getLastMessageDate() <= lastSuccessfulRun` (both Date objects). First run (`null`) processes all.
+- **Privacy:** `logSubject` toggle applies to accumulateRow only; matchRule always uses real subject. Debug logging never includes full prompt.
+- **Error isolation (NFR-101):** Per-thread try/catch. addLabel failure in catch prevents archive (NFR-106).
+- **Routing log tiers:** Only RULE, CLASSIFIER, FALLBACK get rows. Header Screener and INBOX rule results logged to Stackdriver only + counted in run_summary.
+- **`signals_json` per tier:** RULE gets `{matchType, matchValue}`, CLASSIFIER gets annotations object, FALLBACK gets `{error}`. All pre-stringified.
+
+### Tests
+
+12 new tests in `tests/main.test.mjs` covering `computeTaxonomyHash` (determinism, order-independence, collision avoidance) and `computeMode` (threshold boundary cases). Full suite: 111 tests, 0 failures.
