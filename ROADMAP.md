@@ -5,26 +5,31 @@
 ## Active
 
 ### Initiative 1: Operator (Data Plane)
-**Status:** Design complete → Implementation next  
+**Status:** Implementation complete → Dry-run validation next
 **Design:** [docs/design/operator/](docs/design/operator/)
 
 The email routing engine. Processes Gmail threads through a three-tier pipeline (Header Screener → static rules → LLM Classifier), logs every decision to an observation store, and exposes taxonomy operations for the control plane. Runs every 5 minutes on Google Apps Script.
 
 **Key deliverables:**
-- Three-tier routing engine (Tier 1 Header Screener, Tier 2 Rules, Tier 3 Gemini Flash Classifier)
-- Observation log to Google Sheets (routing_log + run_summary)
+- ~~Three-tier routing engine (Tier 1 Header Screener, Tier 2 Rules, Tier 3 Gemini Flash Classifier)~~ ✅
+- ~~Observation log to Google Sheets (routing_log + run_summary)~~ ✅
 - Label operations: mergeLabels for v1 launch; reclassify, split, retire deferred to Strategist
-- Cleanup/Maintenance mode auto-switching (dynamic batch size)
-- Dry-run mode with duplicate-prevention
-- `_review` fallback label + `_keep` human override label
+- ~~Cleanup/Maintenance mode auto-switching (dynamic batch size)~~ ✅
+- ~~Dry-run mode with duplicate-prevention~~ ✅
+- ~~`_review` fallback label + `_keep` human override label~~ ✅
 - `undoSince()` manual recovery helper
 
+**Completed phases:**
+1. ~~Requirements + design analysis~~ ✅
+2. ~~Phase 1: Foundation~~ ✅ (Config, validation, labels, sheets)
+3. ~~Phase 2: Infrastructure~~ ✅ (Utils, sender resolution, body extraction, observation store)
+4. ~~Phase 3: Tiers 1 & 2~~ ✅ (Header Screener, Rules engine)
+5. ~~Phase 4: Tier 3~~ ✅ (Annotations, Classifier, Gemini API)
+6. ~~Phase 5: Orchestration~~ ✅ (Full pipeline wiring in processInbox)
+
 **Next steps:**
-1. ~~Requirements + design analysis~~ ✅ (12 lenses, ~90% implementation-ready)
-2. Resolve 3 blocking gaps (Header Screener boolean logic, Gemini API call pattern, body text extraction — all have proposed solutions in brainstorm §23)
-3. Implementation
-4. Dry-run validation
-5. Go-live
+1. Dry-run validation (deploy, soak test with `dryRun: true`)
+2. Go-live (flip `dryRun: false`)
 
 ---
 

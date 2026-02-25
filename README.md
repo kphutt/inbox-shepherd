@@ -2,7 +2,7 @@
 
 A Gmail system that sorts your email, learns from corrections, and gets cheaper over time.
 
-> **Status:** Pre-implementation ([see progress](#project-status))  
+> **Status:** Dry-run validation ([see progress](#project-status))
 > **Platform:** Google Apps Script + Gemini 2.0 Flash  
 > **License:** MIT
 
@@ -74,7 +74,7 @@ Every decision is logged to an observation store. This data is what makes the sy
 
 ## Getting Started
 
-> **Not yet implemented.** The design is complete and implementation is next. Once built, setup will be: clone the repo, edit `Config.js` with your taxonomy, set your Gemini API key in ScriptProperties, deploy via `clasp push`, and enable the 5-minute trigger.
+> **Currently in dry-run validation.** Setup: clone the repo, run `npm install -g @google/clasp && clasp login`, edit `Config.js` with your taxonomy and owner email, set `GEMINI_API_KEY` and `OBSERVATION_SHEET_ID` in Apps Script Project Settings > Script Properties, deploy via `clasp push`, and run `installTrigger()` from the editor to enable the 5-minute trigger. Start with `dryRun: true` to validate before going live.
 
 ## Documentation
 
@@ -88,8 +88,8 @@ Every decision is logged to an observation store. This data is what makes the sy
 
 1. ~~Requirements definition~~ ✅
 2. ~~Design analysis~~ ✅
-3. Implementation (Apps Script + clasp) ← **next**
-4. Dry-run validation
+3. ~~Implementation~~ ✅ (Phases 1–5: foundation, infrastructure, tiers 1–3, orchestration)
+4. Dry-run validation ← **current** (`dryRun: true`, 111 unit tests passing)
 5. Go-live
 
 ## Tech Stack
