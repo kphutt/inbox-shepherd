@@ -1,6 +1,6 @@
 # Phase 1 — Foundation
 
-> **Status:** Not started
+> **Status:** Implemented
 > **Depends on:** Nothing (first phase)
 > **Produces:** `Config.js`, `LabelManager.gs`, `ObservationStore.gs` (create-only), `Main.gs` (validation + lock only)
 > **Source spec:** [requirements.md](requirements.md) §5.2b, NFR-104, NFR-105, FR-203, FR-705
@@ -44,4 +44,38 @@ None for this phase.
 
 ## Implementation Notes
 
-*(To be filled during implementation planning)*
+### Design decisions made during implementation
+
+1. **`validateConfig()` returns `{ valid, spreadsheet }`** instead of a plain boolean. The spreadsheet opened during validation check #4 is passed through to `ensureSheet()`, avoiding a redundant `SpreadsheetApp.openById()` call. Identified during plan review (Lens 2: Dependency Correctness).
+
+2. **Top-level CONFIG existence guard** in `processInbox()`. If Config.js is deleted or empty, `typeof CONFIG === 'undefined'` catches it with a clear error before any other code runs. Identified during plan review (Lens 3: Error Handling).
+
+3. **`ensureSheet()` takes a Spreadsheet object** (not config) since the spreadsheet is already opened by `validateConfig()`. This makes the dependency explicit and avoids re-reading ScriptProperties.
+
+4. **Header arrays as module-level constants** in ObservationStore.gs (`ROUTING_LOG_HEADERS`, `RUN_SUMMARY_HEADERS`). Phase 2's batch write logic can reference these for column ordering.
+
+5. **`getManagedLabelNames()` helper** in LabelManager.gs extracts the Set of managed label names from the label cache Map. Phase 2's `isAlreadyLabeled()` will use this for skip-if-labeled checks.
+
+6. **Frozen header rows** added to both Sheets tabs for usability. Not in spec but harmless and helpful.
+
+### Files created
+
+| File | Lines | Purpose |
+|------|------:|---------|
+| `src/appsscript.json` | 13 | Manifest: V8 runtime, 5 OAuth scopes |
+| `src/Config.js` | 63 | User config: taxonomy, rules, settings |
+| `src/LabelManager.gs` | 52 | Label auto-creation + cache |
+| `src/ObservationStore.gs` | 66 | Sheet tab auto-creation |
+| `src/Main.gs` | 152 | Entry point, validation, lock, trigger setup |
+
+### Pre-deployment checklist
+
+1. Install clasp: `npm install -g @google/clasp`
+2. Login: `clasp login`
+3. Create Apps Script project: `clasp create --type standalone --rootDir src`
+4. Set ScriptProperties in Apps Script editor (Project Settings > Script Properties):
+   - `GEMINI_API_KEY` — from Google AI Studio
+   - `OBSERVATION_SHEET_ID` — ID of a blank Google Sheets spreadsheet
+5. Edit `src/Config.js`: set `ownerEmail` to your Gmail address
+6. `clasp push`
+7. Run `installTrigger()` from the Apps Script editor
