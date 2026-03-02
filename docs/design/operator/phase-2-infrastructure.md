@@ -1,6 +1,7 @@
 # Phase 2 — Infrastructure
 
 > **Status:** Complete
+> **Author:** Karsten Huttelmaier — co-authored with Claude
 > **Depends on:** Phase 1 (Config.js, label cache, observation store shell)
 > **Produces:** `Utils.gs`, batch accumulator in `ObservationStore.gs`
 > **Source spec:** [requirements.md](requirements.md) FR-010, FR-011, FR-012, FR-707, Open Q #10

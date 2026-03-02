@@ -1,8 +1,9 @@
 # Operator — Brainstorm
 
-> Working through open challenges, edge cases, and design decisions before implementation.  
-> Status: Active  
+> Working through open challenges, edge cases, and design decisions before implementation.
+> Status: Active
 > Last updated: 2026-02-24
+> **Author:** Karsten Huttelmaier — co-authored with Claude
 
 ---
 

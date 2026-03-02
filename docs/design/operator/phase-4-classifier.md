@@ -1,6 +1,7 @@
 # Phase 4 — Tier 3 (Classifier)
 
 > **Status:** Implemented
+> **Author:** Karsten Huttelmaier — co-authored with Claude
 > **Depends on:** Phase 2 (body extraction, sender resolution)
 > **Produces:** `Classifier.gs`, `Annotations.gs`
 > **Source spec:** [requirements.md](requirements.md) FR-300–307, IF-105, Open Q #9

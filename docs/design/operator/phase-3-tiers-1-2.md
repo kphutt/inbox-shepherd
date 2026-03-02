@@ -1,6 +1,7 @@
 # Phase 3 — Tiers 1 & 2 (Header Screener + Rules)
 
 > **Status:** Implemented
+> **Author:** Karsten Huttelmaier — co-authored with Claude
 > **Depends on:** Phase 2 (sender resolution, skip-if-labeled, body extraction)
 > **Produces:** `HeaderScreener.gs`, `Rules.gs`
 > **Source spec:** [requirements.md](requirements.md) FR-100–105, FR-200–205, Open Q #5

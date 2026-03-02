@@ -1,6 +1,7 @@
 # Phase 1 — Foundation
 
 > **Status:** Implemented
+> **Author:** Karsten Huttelmaier — co-authored with Claude
 > **Depends on:** Nothing (first phase)
 > **Produces:** `Config.js`, `LabelManager.gs`, `ObservationStore.gs` (create-only), `Main.gs` (validation + lock only)
 > **Source spec:** [requirements.md](requirements.md) §5.2b, NFR-104, NFR-105, FR-203, FR-705

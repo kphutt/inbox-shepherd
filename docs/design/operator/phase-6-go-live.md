@@ -1,6 +1,7 @@
 # Phase 6 — Utilities & Go-Live
 
 > **Status:** Not started
+> **Author:** Karsten Huttelmaier — co-authored with Claude
 > **Depends on:** Phase 5 (full pipeline operational)
 > **Produces:** `undoSince`, `mergeLabels`, acceptance test results, production deployment
 > **Source spec:** [requirements.md](requirements.md) FR-711, FR-501–503, FR-500, §9

@@ -1,6 +1,7 @@
 # Phase 5 — Orchestration
 
 > **Status:** Implemented
+> **Author:** Karsten Huttelmaier — co-authored with Claude
 > **Depends on:** Phases 3 & 4 (all three tiers complete)
 > **Produces:** `Main.gs` (full pipeline wiring, observation logging, dry-run mode)
 > **Source spec:** [requirements.md](requirements.md) FR-013–016, FR-400–403, FR-700–707, FR-710, NFR-100–103, NFR-302

@@ -1,7 +1,7 @@
 # inbox-shepherd — Operator Design
 
 > **Version:** 5.1 · **Date:** 2026-02-24 · **Status:** Implementation-Ready  
-> **Author:** Karsten Huttelmaier  
+> **Author:** Karsten Huttelmaier — co-authored with Claude
 > **Scope:** Data Plane (email routing engine) only. See [strategist brainstorm](../strategist/brainstorm.md) for Control Plane design. See [ROADMAP.md](../../../ROADMAP.md) for the full initiative backlog.
 
 ---

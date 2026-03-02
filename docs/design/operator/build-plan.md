@@ -1,6 +1,7 @@
 # Operator Build Plan
 
 > **Version:** 1.0 · **Date:** 2026-02-24
+> **Author:** Karsten Huttelmaier — co-authored with Claude
 > **Scope:** v1 Operator implementation — 6 phases from foundation to go-live.
 > **Source spec:** [requirements.md](requirements.md) (v5.1) · [brainstorm.md](brainstorm.md)
 

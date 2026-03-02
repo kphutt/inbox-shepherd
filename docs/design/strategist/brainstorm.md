@@ -1,7 +1,7 @@
 # inbox-shepherd — Strategist Design
 
 > **Version:** 0.2 · **Date:** 2026-02-24 · **Status:** Stub  
-> **Author:** Karsten Huttelmaier  
+> **Author:** Karsten Huttelmaier — co-authored with Claude
 > **Scope:** Control Plane (rule management, taxonomy evolution, feedback analysis). See [operator requirements](../operator/requirements.md) for the Data Plane. See [ROADMAP.md](../../../ROADMAP.md) for the full initiative backlog.
 
 ---
