@@ -89,7 +89,7 @@ Every decision is logged to an observation store. This data is what makes the sy
 1. ~~Requirements definition~~ ✅
 2. ~~Design analysis~~ ✅
 3. ~~Implementation~~ ✅ (Phases 1–5: foundation, infrastructure, tiers 1–3, orchestration)
-4. Dry-run validation ← **current** (`dryRun: true`, 111 unit tests passing)
+4. Dry-run validation ← **current** (`dryRun: true`)
 5. Go-live
 
 ## Tech Stack
