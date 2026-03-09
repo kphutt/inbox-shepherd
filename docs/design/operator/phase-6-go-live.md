@@ -83,4 +83,16 @@ All 19 acceptance criteria from requirements.md §9, grouped:
 
 ## Implementation Notes
 
-*(To be filled during implementation planning)*
+### GCP Setup for Advanced Protection
+
+Google's Advanced Protection Program blocks Apps Script from accessing Gmail unless the script is linked to a user-managed GCP project with proper OAuth configuration. Steps:
+
+- [ ] **Create GCP project** — [console.cloud.google.com/projectcreate](https://console.cloud.google.com/projectcreate), name: `inbox-shepherd`. Note the Project Number (12-digit).
+- [ ] **Enable APIs** — In the GCP project, APIs & Services > Library. Enable **Apps Script API** and **Gmail API**.
+- [ ] **Configure OAuth consent screen** — APIs & Services > OAuth consent screen. Select External. Fill in app name (`inbox-shepherd`) and developer contact email. Skip scopes. **Add yourself as a Test User** (critical for APP accounts). Save.
+- [ ] **Link GCP project to Apps Script** — Copy Project Number from GCP Settings. In Apps Script editor: Project Settings > Google Cloud Platform (GCP) Project > Change project. Paste number, confirm.
+- [ ] **Authorize** — Run `processInbox` or `installTrigger` from the Apps Script editor. Accept the OAuth consent prompt (will show "unverified app" warning — expected for self-hosted scripts).
+
+References:
+- [Navigating AppScript Restrictions in APP](https://medium.com/google-cloud/navigating-appscript-restrictions-in-googles-advanced-protection-program-32e201dc98c8)
+- [Linking GCP to Apps Script](https://tanaikech.github.io/2019/07/05/linking-cloud-platform-project-to-google-apps-script-project/)
