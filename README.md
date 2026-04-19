@@ -2,7 +2,7 @@
 
 A Gmail system that sorts your email, learns from corrections, and gets cheaper over time.
 
-> **Status:** Dry-run validation ([see progress](#project-status))
+> **Status:** Deployment blocked on Google Advanced Protection Program — [see investigation](docs/design/operator/app-blocker.md)
 > **Platform:** Google Apps Script + Gemini 2.0 Flash  
 > **License:** MIT
 
@@ -89,8 +89,7 @@ Every decision is logged to an observation store. This data is what makes the sy
 1. ~~Requirements definition~~ ✅
 2. ~~Design analysis~~ ✅
 3. ~~Implementation~~ ✅ (Phases 1–5: foundation, infrastructure, tiers 1–3, orchestration)
-4. Dry-run validation ← **current** (`dryRun: true`)
-5. Go-live
+4. **Deployment blocked** — Advanced Protection Program (APP) restricts the OAuth scopes inbox-shepherd needs. See [app-blocker.md](docs/design/operator/app-blocker.md) for the full investigation and paths forward.
 
 ## Tech Stack
 

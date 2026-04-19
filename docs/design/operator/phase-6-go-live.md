@@ -85,6 +85,8 @@ All 19 acceptance criteria from requirements.md §9, grouped:
 
 ### GCP Setup for Advanced Protection
 
+> ⚠️ **This procedure is insufficient for APP-enrolled accounts.** APP blocks third-party apps requesting restricted scopes (`gmail.modify`, `mail.google.com`, etc.) regardless of GCP configuration. The steps below cover the necessary GCP project linking but do not bypass APP's scope restrictions. See [app-blocker.md](app-blocker.md) for the full investigation and remaining options.
+
 Google's Advanced Protection Program blocks Apps Script from accessing Gmail unless the script is linked to a user-managed GCP project with proper OAuth configuration. Steps:
 
 - [ ] **Create GCP project** — [console.cloud.google.com/projectcreate](https://console.cloud.google.com/projectcreate), name: `inbox-shepherd`. Note the Project Number (12-digit).
