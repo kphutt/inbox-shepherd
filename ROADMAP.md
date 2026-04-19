@@ -5,7 +5,7 @@
 ## Active
 
 ### Initiative 1: Operator (Data Plane)
-**Status:** Implementation complete → Dry-run validation next
+**Status:** Implementation complete — deployment blocked on Advanced Protection Program. See [app-blocker.md](docs/design/operator/app-blocker.md).
 **Design:** [docs/design/operator/](docs/design/operator/)
 
 The email routing engine. Processes Gmail threads through a three-tier pipeline (Header Screener → static rules → LLM Classifier), logs every decision to an observation store, and exposes taxonomy operations for the control plane. Runs every 5 minutes on Google Apps Script.
@@ -28,8 +28,9 @@ The email routing engine. Processes Gmail threads through a three-tier pipeline 
 6. ~~Phase 5: Orchestration~~ ✅ (Full pipeline wiring in processInbox)
 
 **Next steps:**
-1. Dry-run validation (deploy, soak test with `dryRun: true`)
-2. Go-live (flip `dryRun: false`)
+1. Resolve APP blocker (no path found for target account — see [app-blocker.md](docs/design/operator/app-blocker.md))
+2. Dry-run validation (deploy, soak test with `dryRun: true`)
+3. Go-live (flip `dryRun: false`)
 
 ---
 
