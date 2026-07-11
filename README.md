@@ -82,7 +82,7 @@ Every decision is logged to an observation store. This data is what makes the sy
 - **[Operator Requirements](docs/design/operator/requirements.md)** — Data plane: email routing engine (v5.1)
 - **[Operator Brainstorm](docs/design/operator/brainstorm.md)** — Detailed design decisions and edge cases
 - **[Strategist Design](docs/design/strategist/)** — Control plane: rule management and taxonomy evolution (stub)
-- **[CLAUDE.md](CLAUDE.md)** — AI agent conventions and project structure
+- **[AGENTS.md](AGENTS.md)** — AI agent conventions and project structure
 
 ## Project Status
 
