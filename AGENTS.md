@@ -4,8 +4,8 @@
 
 ```
 inbox-shepherd/
-├── ROADMAP.md              # Prioritized initiatives (backlog)
-├── CLAUDE.md               # This file — AI agent conventions
+├── ROADMAP.md              # Prioritized initiatives (forward roadmap)
+├── AGENTS.md               # This file — AI agent conventions
 ├── README.md               # User-facing project overview
 ├── LICENSE                  # MIT
 ├── .gitignore
