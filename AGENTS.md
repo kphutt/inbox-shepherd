@@ -1,4 +1,6 @@
-# inbox-shepherd — Conventions
+# inbox-shepherd — repo guide
+
+> Cross-repo conventions (fleet-wide) live in `~/dev/AGENTS.md` — the sole authority for anything fleet-wide. This file holds only inbox-shepherd-specific guidance.
 
 ## Structure
 
