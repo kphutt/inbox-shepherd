@@ -3,8 +3,9 @@
 # .github/workflows, so there is no "github-actions" entry; add one with the first workflow.
 version: 2
 updates:
-  # .pre-commit-config.yaml pins its hooks (gitleaks and friends) to a release; this keeps
-  # those pins current. Every release-age delay is 7 days; security updates skip the cooldown.
+  # .pre-commit-config.yaml pins its hooks to a release; this keeps those pins current. Every
+  # release-age delay is 7 days. Dependabot has no security updates for pre-commit, so every
+  # hook bump waits the full cooldown.
   - package-ecosystem: "pre-commit"
     directory: "/"
     schedule:
